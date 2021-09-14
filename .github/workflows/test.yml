@@ -1,0 +1,31 @@
+name: Install
+on: [push, pull_request]
+jobs:
+  test-job:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        operating-system: ['ubuntu-latest']
+        php-versions: ['7.4']
+        phpunit-versions: ['latest']
+        apache2: ['2.4']
+    steps:
+      - uses: actions/checkout@v2
+      - name: test
+        run: |
+          #cat /etc/apache2/sites-enabled/000-default.conf
+          #echo "-------------------"
+          #printenv
+          #echo "-------------------"
+          #pwd
+          sudo a2enmod proxy
+          sudo a2enmod proxy_fcgi
+          sudo mv ./000-default.conf /etc/apache2/sites-enabled/000-default.conf
+          sudo service apache2 start
+          systemctl status apache2.service
+          curl http://localhost/index.php
+
+
+
+
+        
